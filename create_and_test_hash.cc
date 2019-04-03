@@ -1,4 +1,5 @@
 // Josh Winton
+// Main file for Assignment 3 Part 1 and 2
 
 #include "quadratic_probing.h"
 #include "linear_probing.h"
@@ -17,9 +18,7 @@ void TestFunctionForHashTable(HashTableType &hash_table, const string &words_fil
   hash_table.MakeEmpty();
 
 
-  // Part 1A
-
-  // Read file:
+  // Read words from input file and fill hash table:
   string db_line;
   ifstream db_file(words_filename);
   if(db_file.is_open()){
@@ -29,15 +28,17 @@ void TestFunctionForHashTable(HashTableType &hash_table, const string &words_fil
   }
 
   // Print hash table data:
+  cout << "\nFilling Hash Table..." << endl << endl;
+  cout << "Table Statistics:\n";
   cout << "Collisions: " << hash_table.getCollisions() << endl;
   cout << "Number of items: " << hash_table.getNumberofElements() << endl;
   cout << "Size of hash table: " << hash_table.getTableSize() << endl;
   cout << "Load factor: " << hash_table.getLoadFactor() << endl;
   cout << "Avg. number of collisions: " << hash_table.getAverageCollisions() << endl;
 
-  // Part 1B
 
   // Queries:
+  cout << "\nQueries:\n";
   string queryline;
   ifstream queryfile(query_filename);
   if(queryfile.is_open()){
@@ -68,7 +69,7 @@ main(int argc, char **argv) {
     HashTableLinear<string> linear_probing_table;
     TestFunctionForHashTable(linear_probing_table, words_filename, query_filename);
   } else if (param_flag == "quadratic") {
-    HashTable<string> quadratic_probing_table;
+    HashTableQuadratic<string> quadratic_probing_table;
     TestFunctionForHashTable(quadratic_probing_table, words_filename, query_filename);
   } else if (param_flag == "double") {
     HashTableDouble<string> double_probing_table;

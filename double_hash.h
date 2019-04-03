@@ -9,7 +9,7 @@
 // Double probing implementation.
 template <typename HashedObj>
 class HashTableDouble {
- public:
+public:
   enum EntryType {ACTIVE, EMPTY, DELETED};
 
   explicit HashTableDouble(size_t size = 101) : array_(NextPrime(size))
@@ -126,7 +126,6 @@ class HashTableDouble {
       probes_++;
       collisions_++;
       current_pos += offset;  // Compute ith probe.
-      offset += offset;
       if (current_pos >= array_.size())
     current_pos -= array_.size();
     }
@@ -155,7 +154,7 @@ class HashTableDouble {
 
   size_t InternalHash2(const HashedObj & x) const {
     static std::hash<HashedObj> hf;
-    return 13 - (hf(x) % 13);
+    return 97 - (hf(x) % 97);
   }
 };
 

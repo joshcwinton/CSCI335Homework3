@@ -37,11 +37,11 @@ int NextPrime(size_t n) {
 
 // Quadratic probing implementation.
 template <typename HashedObj>
-class HashTable {
+class HashTableQuadratic {
  public:
   enum EntryType {ACTIVE, EMPTY, DELETED};
 
-  explicit HashTable(size_t size = 101) : array_(NextPrime(size))
+  explicit HashTableQuadratic(size_t size = 101) : array_(NextPrime(size))
     { MakeEmpty(); }
 
   bool Contains(const HashedObj & x) {
