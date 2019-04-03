@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <functional>
 #include <string>
+#include "primehelpers.h"
 
 // Double probing implementation.
 template <typename HashedObj>

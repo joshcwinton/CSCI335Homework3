@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <functional>
 #include <string>
+#include "primehelpers.h"
 
 // Linear probing implementation.
 template <typename HashedObj>
