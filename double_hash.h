@@ -1,51 +1,21 @@
-#ifndef QUADRATIC_PROBING_H
-#define QUADRATIC_PROBING_H
+#ifndef DOUBLE_PROBING_H
+#define DOUBLE_PROBING_H
 
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <string>
 
-
-namespace {
-
-// Internal method to test if a positive number is prime.
-bool IsPrime(size_t n) {
-  if( n == 2 || n == 3 )
-    return true;
-
-  if( n == 1 || n % 2 == 0 )
-    return false;
-
-  for( int i = 3; i * i <= n; i += 2 )
-    if( n % i == 0 )
-      return false;
-
-  return true;
-}
-
-
-// Internal method to return a prime number at least as large as n.
-int NextPrime(size_t n) {
-  if (n % 2 == 0)
-    ++n;
-  while (!IsPrime(n)) n += 2;
-  return n;
-}
-
-}  // namespace
-
-
-// Quadratic probing implementation.
+// Double probing implementation.
 template <typename HashedObj>
-class HashTable {
+class HashTableDouble {
  public:
   enum EntryType {ACTIVE, EMPTY, DELETED};
 
-  explicit HashTable(size_t size = 101) : array_(NextPrime(size))
-    { MakeEmpty(); }
+  explicit HashTableDouble(size_t size = 101) : array_(NextPrime(size))
+    { MakeEmpty();;}
 
   bool Contains(const HashedObj & x) {
-    probes_ = 1;
     return IsActive(FindPos(x));
   }
 
@@ -147,15 +117,16 @@ class HashTable {
   { return array_[current_pos].info_ == ACTIVE; }
 
   size_t FindPos(const HashedObj & x) {
-    size_t offset = 1;
     size_t current_pos = InternalHash(x);
+    size_t offset = InternalHash2(x);
+    probes_ = 1;
 
     while (array_[current_pos].info_ != EMPTY &&
        array_[current_pos].element_ != x) {
       probes_++;
       collisions_++;
       current_pos += offset;  // Compute ith probe.
-      offset += 2;
+      offset += offset;
       if (current_pos >= array_.size())
     current_pos -= array_.size();
     }
@@ -181,6 +152,11 @@ class HashTable {
     static std::hash<HashedObj> hf;
     return hf(x) % array_.size( );
   }
+
+  size_t InternalHash2(const HashedObj & x) const {
+    static std::hash<HashedObj> hf;
+    return 13 - (hf(x) % 13);
+  }
 };
 
-#endif  // QUADRATIC_PROBING_H
+#endif  // DOUBLE_PROBING_H
